@@ -9,7 +9,7 @@ module.exports = app => {
     router.post("/", home.create);
 
     //layanan
-    router.get("/getu/:id", home.findAllReviews);
+    router.get("/:id", home.findAllReviews);
 //user
     
     router.get("/user/:id", user.findAllReviewsByUser);
@@ -18,8 +18,9 @@ module.exports = app => {
     router.get("/", home.findAll);
   
     router.get("/published", home.findAllPublished);
+
+    router.post("/add/:id", ulas.create)
   
-    router.get("/:id", home.findOne);
   
     router.put("/:id", home.update);
   
@@ -27,18 +28,6 @@ module.exports = app => {
   
     router.delete("/", home.deleteAll);
 
-//ulas
-    
-      router.post("/ulas", ulas.create);
-    
-      router.get("/ulas", ulas.findAll);
-      
-      router.get("/ulas/:id", ulas.findOne);
-    
-      router.put("/ulas/:id", ulas.update);
-    
-      router.delete("/ulas/:id", ulas.delete);
-    
   
     app.use('/api/home', router);
   };

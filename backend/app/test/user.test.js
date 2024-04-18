@@ -1,36 +1,80 @@
-// Import modul yang diperlukan
-const { create } = require('../controllers/controller'); // Sesuaikan dengan nama berkas Anda
-const { Layanan } = require('../models/layanan'); // Sesuaikan dengan nama berkas dan model Anda
+const { create } = require('../controllers/controller'); 
+const { Layanan } = require('../models/layanan'); 
+const res = {
+  status: jest.fn().mockReturnThis(),
+  send: jest.fn(),
+};
 
 describe('create function', () => {
-    test('should create a new Layanan and send data if request is valid', async () => {
-      // Mock request and response objects
-      const req = {
-        body: {
-          title: 'Test Title',
-          description: 'Test Description',
-          jenis: 'Test Jenis',
-          rating: 5,
-          alamat: 'Test Alamat',
-          phone: '123456789',
-          linkImg: 'test.jpg'
-        }
-      };
-      const res = {
-        send: jest.fn(),
-        status: jest.fn().mockReturnThis()
-      };
-  
-      // Mock Layanan.create to return a mock data
-      const mockData = { id: 1, ...req.body };
-      Layanan.create = jest.fn().mockResolvedValue(mockData);
-  
-      // Call the create function
-      await create(req, res);
-  
-      // Verify that Layanan.create is called with the correct parameter
-      expect(Layanan.create).toHaveBeenCalledWith(req.body);
-      // Verify that the response is sent with the correct data
-      expect(res.send).toHaveBeenCalledWith(mockData);
-    });
+  beforeEach(() => {
+    // Clear all mock calls between tests
+    jest.clearAllMocks();
   });
+
+  it('should return 400 if title is not provided', async () => {
+    const req = {
+      body: {
+        description: 'Description',
+        jenis: 'Jenis',
+        alamat: 'Alamat',
+        phone: 'Phone',
+        linkImg: 'LinkImg',
+      },
+    };
+
+    await create(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.send).toHaveBeenCalledWith({ message: 'Content can not be empty!' });
+  });
+
+  it('should create a new entry if all required data is provided', async () => {
+    const req = {
+      body: {
+        title: 'Title',
+        description: 'Description',
+        jenis: 'Jenis',
+        alamat: 'Alamat',
+        phone: 'Phone',
+        linkImg: 'LinkImg',
+      },
+    };
+
+    const mockData = {
+      title: 'Title',
+      description: 'Description',
+      jenis: 'Jenis',
+      alamat: 'Alamat',
+      phone: 'Phone',
+      linkImg: 'LinkImg',
+    };
+
+    Layanan.create = jest.fn().mockResolvedValue(mockData);
+
+    await create(req, res);
+
+    expect(Layanan.create).toHaveBeenCalledWith(mockData);
+    expect(res.send).toHaveBeenCalledWith(mockData);
+  });
+
+  it('should return 500 if an error occurs during creation', async () => {
+    const req = {
+      body: {
+        title: 'Title',
+        description: 'Description',
+        jenis: 'Jenis',
+        alamat: 'Alamat',
+        phone: 'Phone',
+        linkImg: 'LinkImg',
+      },
+    };
+
+    const mockError = new Error('Mock error');
+    Layanan.create = jest.fn().mockRejectedValue(mockError);
+
+    await create(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.send).toHaveBeenCalledWith({ message: 'Some error occurred while creating.' });
+  });
+});

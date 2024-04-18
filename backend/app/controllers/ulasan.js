@@ -5,6 +5,8 @@ const Ulasan = db.ulasan;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
+  const id = req.params.id
+
     if (!req.body.ulasan) {
       res.status(400).send({
         message: "Content can not be empty!"
@@ -13,6 +15,7 @@ exports.create = (req, res) => {
     }
   
     const ulasan = {
+        layanansId : id,
         ulasan: req.body.ulasan,
         rating: req.body.rating
     };

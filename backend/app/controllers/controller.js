@@ -169,12 +169,12 @@ exports.findAllPublished = (req, res) => {
    exports.findAllReviews = (req, res) => {
     const id = req.params.id;
 
-    Layanan.findAll({
+    Layanan.findOne({
       include: [{
         model: Ulasan,
         as: 'ul',
       }],
-      where: { id: 2 }
+      where: { id: id }
     })
     .then(data => {
       res.send(data);
