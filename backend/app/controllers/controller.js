@@ -16,10 +16,9 @@ exports.create = (req, res) => {
       title: req.body.title,
       description: req.body.description,
       jenis: req.body.jenis,
-      ulasan: req.body.ulasan,
-      rating: req.body.rating,
       alamat: req.body.alamat,
-      phone: req.body.phone
+      phone: req.body.phone,
+      linkImg: req.body.linkImg
     };
   
     Layanan.create(layanan)
@@ -73,7 +72,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
   
-    Layanan.update(req.body, {
+    Layanan.update && (req.body, {
       where: { id: id }
     })
       .then(num => {
@@ -146,3 +145,44 @@ exports.findAllPublished = (req, res) => {
         });
       });
   };
+
+  exports.findAllReviews = (req, res) => {
+    const id = req.params.id;
+
+    Layanan.findAll({
+      include: [{
+        model: Ulasan,
+        as: 'ul',
+      }],
+      where: { id: 2 }
+    })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Data."
+      });
+    });
+  };
+
+   exports.findAllReviews = (req, res) => {
+    const id = req.params.id;
+
+    Layanan.findAll({
+      include: [{
+        model: Ulasan,
+        as: 'ul',
+      }],
+      where: { id: 2 }
+    })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Data."
+      });
+    });
+  };
+  

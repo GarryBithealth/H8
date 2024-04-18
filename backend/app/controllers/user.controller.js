@@ -1,3 +1,8 @@
+const db = require("../models");
+const User =db.user;
+const Ulasan = db.ulasan;
+
+
 exports.allAccess = (req, res) => {
     res.status(200).send("Public Content.");
   };
@@ -12,4 +17,24 @@ exports.allAccess = (req, res) => {
   
   exports.moderatorBoard = (req, res) => {
     res.status(200).send("Moderator Content.");
+  };
+
+  exports.findAllReviewsByUser = (req, res) => {
+    const id = req.params.id;
+
+    User.findAll({
+      include: [{
+        model: Ulasan,
+        as: 'us',
+      }],
+      where: { id: id }
+    })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving Data."
+      });
+    });
   };
