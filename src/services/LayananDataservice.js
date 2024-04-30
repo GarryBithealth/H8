@@ -14,7 +14,7 @@ class LayananDataService {
   }
 
   update(id, data) {
-    return http.put(`/home/${id}`, data);
+    return http.put(`/home/edit/${id}`, data);
   }
 
   delete(id) {
@@ -25,8 +25,12 @@ class LayananDataService {
     return http.delete(`/home`);
   }
 
-  findByTitle(title) {
-    return http.get(`/home?title=${title}`);
+  findBy(value,params) {
+    return http.get(`/home?${params}=${value}`);
+  }
+
+  paginated(value) {
+    return http.get(`/home?page=${value}`);
   }
 }
 

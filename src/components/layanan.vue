@@ -18,22 +18,15 @@
       <div class="form-group">
         <label for="alamat">Alamat</label>
         <input type="text" class="form-control" id="alamat"
-          v-model="currentLayanan.description"
+          v-model="currentLayanan.alamat"
         />
       </div>
 
 
       <div class="form-group">
-        <label for="rating">Rating</label>
-        <input type="text" class="form-control" id="rating"
-          v-model="currentLayanan.rating"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="ulasan">Ulasan</label>
-        <input type="text" class="form-control" id="ulasan"
-          v-model="currentLayanan.ulasan"
+        <label for="linkImg">Link Image</label>
+        <input type="text" class="form-control" id="linkImg"
+          v-model="currentLayanan.linkImg"
         />
       </div>
 
@@ -95,9 +88,8 @@ export default {
         title: this.currentLayanan.title,
         description: this.currentLayanan.description,
         alamat : this.currentLayanan.alamat,
-        rating : this.currentLayanan.rating,
-        ulasan : this.currentLayanan.ulasan,
         phone: this.currentLayanan.phone,
+        linkImg: this.currentLayanan.linkImg,
         published: status
       };
 
@@ -144,7 +136,7 @@ export default {
 
 <style>
 .edit-form {
-  max-width: 300px;
+  max-width: 3000px;
   margin: auto;
 }
 </style>

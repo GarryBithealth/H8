@@ -1,3 +1,4 @@
+import { defineStore } from 'pinia';
 import AuthService from '../services/auth.service';
 
 const user = JSON.parse(localStorage.getItem('user'));
@@ -5,57 +6,53 @@ const initialState = user
   ? { status: { loggedIn: true }, user }
   : { status: { loggedIn: false }, user: null };
 
-export const auth = {
-  namespaced: true,
-  state: initialState,
+export const useAuthStore = defineStore('auth', {
+  state: () => ({
+    status: initialState.status,
+    user: initialState.user,
+  }),
   actions: {
-    login({ commit }, user) {
-      return AuthService.login(user).then(
-        user => {
-          commit('loginSuccess', user);
-          return Promise.resolve(user);
-        },
-        error => {
-          commit('loginFailure');
-          return Promise.reject(error);
-        }
-      );
+    async login(user) {
+      try {
+        const response = await AuthService.login(user);
+        this.loginSuccess(response);
+        return response;
+      } catch (error) {
+        this.loginFailure();
+        throw error;
+      }
     },
-    logout({ commit }) {
+    logout() {
       AuthService.logout();
-      commit('logout');
+      this.logoutSuccess();
     },
-    register({ commit }, user) {
-      return AuthService.register(user).then(
-        response => {
-          commit('registerSuccess');
-          return Promise.resolve(response.data);
-        },
-        error => {
-          commit('registerFailure');
-          return Promise.reject(error);
-        }
-      );
-    }
+    async register(user) {
+      try {
+        const response = await AuthService.register(user);
+        this.registerSuccess();
+        return response.data;
+      } catch (error) {
+        this.registerFailure();
+        throw error;
+      }
+    },
+    loginSuccess(user) {
+      this.status.loggedIn = true;
+      this.user = user;
+    },
+    loginFailure() {
+      this.status.loggedIn = false;
+      this.user = null;
+    },
+    logoutSuccess() {
+      this.status.loggedIn = false;
+      this.user = null;
+    },
+    registerSuccess() {
+      this.status.loggedIn = false;
+    },
+    registerFailure() {
+      this.status.loggedIn = false;
+    },
   },
-  mutations: {
-    loginSuccess(state, user) {
-      state.status.loggedIn = true;
-      state.user = user;
-    },
-    loginFailure(state) {
-      state.status.loggedIn = false;
-      state.user = null;
-    },
-    logout(state) {
-      state.status.loggedIn = false;
-      state.user = null;
-    },
-    registerSuccess(state) {
-      state.status.loggedIn = false;
-    },
-    registerFailure(state) {
-      state.status.loggedIn = false;
-    }
-  }
-};
+});
