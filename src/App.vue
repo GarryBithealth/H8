@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand" style="background-color: rgba(150,30,40, 0.8);
+    <nav class="navbar navbar-expand" style="background-color: rgba(30,30,30, 0.8);
 ">
       <div v-if="!currentUser" class="navbar-nav mr-auto">
         <li class="nav-item">
@@ -10,10 +10,8 @@
         </li>
       </div>
       <div class="navbar-nav mr-auto">
-        <router-link to="/home">
-        <img src="../src/assets/images.png" alt="" style="width: 30px; margin-top: 10px;"></router-link>
         <li class="nav-item" v-if="currentUser">
-          <router-link to="/home" class="nav-link" style="color: azure;">
+          <router-link to="/home" class="nav-link">
             <font-awesome-icon/> H8 Group
           </router-link>
         </li>
@@ -39,13 +37,13 @@
 
       <div v-if="currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
-          <router-link to="/profile" class="nav-link" style="color: beige;">
+          <router-link to="/profile" class="nav-link">
             <font-awesome-icon icon="user" />
             {{ currentUser.username }}
           </router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" @click.prevent="logOut" style="color: bisque;">
+          <a class="nav-link" @click.prevent="logOut">
             <font-awesome-icon icon="sign-out-alt" /> LogOut
           </a>
         </li>
@@ -87,12 +85,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.nav-item{
-  --clr: rgb(247, 197, 159);
-  --clr-alpha: rgb(247, 197, 159,.1);
-  animation: spinner 1.6s infinite ease;
-  transform-style: preserve-3d;
-}
-</style>

@@ -1,7 +1,6 @@
 <template>
   <div v-if="currentLayanan" class="edit-form">
     <h4>Layanan</h4>
-      <img :src="currentLayanan.linkImg" alt="poto" class="photos" style="height: 200px; width: 200px;">
     <form>
       <div class="form-group">
         <label for="title"><strong>Title:</strong></label>
@@ -16,35 +15,17 @@
         <label for="alamat"><strong>Alamat:</strong></label>
         <p> {{currentLayanan.alamat}}</p>
       </div>
+
+
       <div class="form-group">
         <label for="rating"><strong>Rating:</strong></label>
-        <p> {{currentLayanan.ul.rating}}</p>
-         <ul>
-      <li v-for="review in currentLayanan.ul" :key="review.id">
-        <p>{{ review.rating }}</p>
-      </li>
-    </ul>
-      </div>
-      <div class="form-group">
-        <label for="rating"><strong>Review:</strong></label>
-        <p> {{currentLayanan.ul.rating}}</p>
-         <ul>
-      <li v-for="review in currentLayanan.ul" :key="review.id">
-        <p>{{ review.ulasan }}</p>
-      </li>
-    </ul>
+        <p> {{currentLayanan.rating}}</p>
       </div>
 
       <div class="form-group">
         <label for="ulasan"><strong>Ulasan:</strong></label>
         <input type="text" class="form-control" id="ulasan"
           v-model="currentLayanan.ulasan"
-        />
-      </div>
-<div class="form-group">
-        <label for="ulasan"><strong>Rating:</strong></label>
-        <input type="text" class="form-control" id="ulasan"
-          v-model="currentLayanan.rating"
         />
       </div>
 
@@ -58,7 +39,7 @@
 
 
     <button type="submit" class="badge badge-success"
-      @click="addUlasan"
+      @click="updateLayanan"
     >
       Update ulasan
     </button>
@@ -73,15 +54,12 @@
 
 <script>
 import LayananDataService from "../services/LayananDataservice";
-import UlasanDataService from "../services/UlasanDataservice";
+
 export default {
   name: "layanan",
   data() {
     return {
       currentLayanan: null,
-      ulasan: [],
-      rating:0,
-      ulasans: "",
       message: ''
     };
   },
@@ -96,6 +74,7 @@ export default {
           console.log(e);
         });
     },
+
     updatePublished(status) {
       var data = {
         id: this.currentLayanan.id,
@@ -130,35 +109,16 @@ export default {
         });
     },
   },
-  addUlasan() {
-      if (!this.ulasans|| this.rating === 0) {
-        return;
-      }
-      UlasanDataService.create({
-        rating: this.rating,
-        ulasan: this.ulasans,
-        idLayanan: this.currentLayanan.id
-      })
-        .then(response => {
-          console.log(response.data);
-          this.newUlasanText = "";
-          this.newUlasanRating = 0;
-          this.retrieveUlasan(this.currentLayanan.id);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
   mounted() {
     this.message = '';
-    this.getLayanan(this.$route.params.id);  }
+    this.getLayanan(this.$route.params.id);
+  }
 };
 </script>
 
 <style>
 .edit-form {
-  max-width: 3000px;
+  max-width: 300px;
   margin: auto;
-  margin-top: 20px
 }
 </style>

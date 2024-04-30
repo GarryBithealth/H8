@@ -33,7 +33,6 @@
     <div class="col-md-6">
       <div v-if="currentLayanan">
         <h4>Layanan</h4>
-          <img :src="currentLayanan.linkImg" alt="poto" class="photos">
         <div>
           <label><strong>Title:</strong></label> {{ currentLayanan.title }}
         </div>
@@ -46,6 +45,8 @@
         <div>
           <label><strong>Rating:</strong></label> {{ currentLayanan.rating }}
         </div>
+
+
         <div>
           <label><strong>Ulasan:</strong></label> {{ currentLayanan.ulasan }}
         </div>
@@ -54,7 +55,7 @@
           <label><strong>Phone:</strong></label> {{ currentLayanan.phone }}
         </div>
 
-        <router-link :to="'/admin/home/' + currentLayanan.id" class="badge badge-warning">Details</router-link>
+        <router-link :to="'/admin/home/' + currentLayanan.id" class="badge badge-warning">Edit</router-link>
       </div>
       <div v-else>
         <br />

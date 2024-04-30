@@ -19,7 +19,7 @@ const routes = [
     component: layananU,
   },
   {
-      path: "/details/:id",
+      path: "/home/:id",
       name: "layanan-details-",
       component: listu,
     },
