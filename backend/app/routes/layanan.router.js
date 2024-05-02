@@ -17,12 +17,10 @@ module.exports = app => {
   
     router.get("/", home.findAll);
   
-    router.get("/published", home.findAllPublished);
-
     router.post("/add/:id", ulas.create)
   
   
-    router.put("/:id", home.update);
+    router.put("/:id", ulas.update);
   
     router.delete("/:id", home.delete);
   

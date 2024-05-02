@@ -1,6 +1,7 @@
 const db = require("../models");
 const User =db.user;
 const Ulasan = db.ulasan;
+const Layanan = db.layanan;
 
 
 exports.allAccess = (req, res) => {
@@ -19,22 +20,32 @@ exports.allAccess = (req, res) => {
     res.status(200).send("Moderator Content.");
   };
 
-  exports.findAllReviewsByUser = (req, res) => {
-    const id = req.params.id;
-
-    User.findAll({
-      include: [{
-        model: Ulasan,
-        as: 'us',
-      }],
-      where: { id: id }
-    })
-    .then(data => {
+  exports.findAllReviewsByUser = async (req, res) => {
+    try {
+      const id = req.params.id;
+  
+      const data = await User.findAll({
+        include: [
+          {
+            model: Ulasan,
+            as: 'us',
+            include: [
+              {
+                model: Layanan, 
+                as: 'layanan', 
+                attributes: ['id', 'title']
+              }
+            ]
+          }
+        ],
+        where: { id: id }
+      });
+  
       res.send(data);
-    })
-    .catch(err => {
+    } catch (err) {
       res.status(500).send({
         message: err.message || "Some error occurred while retrieving Data."
       });
-    });
-  };
+    }
+  }
+  

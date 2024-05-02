@@ -47,7 +47,8 @@ function initial() {
 
 
 app.get("/", (req, res) => {
-  res.json({ message: "Test" });
+  //res.json({ message: "Test" });
+  res.status(200).json({ message: "Test" });
 });
 
 require('./app/routes/auth.routes')(app);

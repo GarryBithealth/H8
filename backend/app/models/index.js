@@ -59,6 +59,8 @@ db.ulasan.belongsTo(db.user,{
   as: 'user'
 });
 
+
+
 db.refreshToken.belongsTo(db.user, {
   foreignKey: 'userId', targetKey: 'id'
 });
