@@ -80,10 +80,10 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   try {
-    const id = req.params.id;
+    const { userId, layanansId } = req.body;
 
     const num = await Ulasan.destroy({
-      where: { id: id }
+      where: { userId: userId, layanansId: layanansId }
     });
 
     if (num == 1) {
@@ -92,15 +92,16 @@ exports.delete = async (req, res) => {
       });
     } else {
       res.status(404).send({
-        message: `Cannot delete Data with id=${id}. Maybe Data was not found!`
+        message: `Cannot delete Data with userId=${userId} and layanansId=${layanansId}. Maybe Data was not found!`
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Could not delete Data with id=" + id
+      message: "Could not delete Data with userId=" + userId + " and layanansId=" + layanansId
     });
   }
 };
+
 
 
 exports.findAll = async (req, res) => {

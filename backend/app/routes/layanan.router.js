@@ -22,7 +22,7 @@ module.exports = app => {
   
     router.put("/:id", ulas.update);
   
-    router.delete("/profile/:id", ulas.delete);
+    router.delete("/profile/", ulas.delete);
   
     router.delete("/", home.deleteAll);
 
