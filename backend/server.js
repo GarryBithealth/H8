@@ -45,10 +45,15 @@ function initial() {
   });
 }
 
+app.get("/", async (req, res) => {
+  try {
 
-app.get("/", (req, res) => {
-  //res.json({ message: "Test" });
-  res.status(200).json({ message: "Test" });
+    res.status(200).json({ message: "Test" });
+
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 require('./app/routes/auth.routes')(app);
@@ -58,6 +63,11 @@ require("./app/routes/layanan.router")(app);
 
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+
+try {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+  });
+} catch (error) {
+  console.error('Error starting the server:', error);
+}

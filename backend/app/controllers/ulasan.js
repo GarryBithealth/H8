@@ -13,23 +13,24 @@ exports.create = async (req, res) => {
         message: "Content can not be empty!"
       });
     }
+
     const ulasan = {
       layanansId: id,
-      userId : req.body.userid,
+      userId: req.body.userid,
       ulasan: req.body.ulasan,
       rating: req.body.rating
     };
 
-    console.log(id)
-    console.log(ulasan)
     const data = await Ulasan.create(ulasan);
-    res.send(data);
+
+    res.status(201).send(data);
   } catch (err) {
     res.status(500).send({
       message: err.message || "Some error occurred while creating."
     });
   }
 };
+
 
 exports.findOne = async (req, res) => {
   try {
@@ -60,12 +61,12 @@ exports.update = async (req, res) => {
     });
 
     if (num == 1) {
-      res.send({
+      res.status(200).send({
         message: "Data was updated successfully."
       });
-    } else {
-      res.send({
-        message: `Cannot update Data with id=${id}. Maybe Data was not found or req.body is empty!`
+    } else if (num == 0) {
+      res.status(404).send({
+        message: `Cannot update Data with id=${id}. Data not found or req.body is empty!`
       });
     }
   } catch (err) {
@@ -74,6 +75,8 @@ exports.update = async (req, res) => {
     });
   }
 };
+
+
 
 exports.delete = async (req, res) => {
   try {
@@ -84,11 +87,11 @@ exports.delete = async (req, res) => {
     });
 
     if (num == 1) {
-      res.send({
+      res.status(200).send({
         message: "Data was deleted successfully!"
       });
     } else {
-      res.send({
+      res.status(404).send({
         message: `Cannot delete Data with id=${id}. Maybe Data was not found!`
       });
     }
@@ -98,6 +101,7 @@ exports.delete = async (req, res) => {
     });
   }
 };
+
 
 exports.findAll = async (req, res) => {
   try {

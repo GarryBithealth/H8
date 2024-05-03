@@ -31,8 +31,8 @@ exports.allAccess = (req, res) => {
             as: 'us',
             include: [
               {
-                model: Layanan, 
-                as: 'layanan', 
+                model: Layanan,
+                as: 'layanan',
                 attributes: ['id', 'title']
               }
             ]
@@ -41,11 +41,18 @@ exports.allAccess = (req, res) => {
         where: { id: id }
       });
   
-      res.send(data);
+      if (data.length > 0) {
+        res.status(200).send(data);
+      } else {
+        res.status(404).send({
+          message: `No reviews found for user with id=${id}`
+        });
+      }
     } catch (err) {
       res.status(500).send({
-        message: err.message || "Some error occurred while retrieving Data."
+        message: err.message || "Some error occurred while retrieving data."
       });
     }
-  }
+  };
+  
   

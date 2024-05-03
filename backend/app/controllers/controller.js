@@ -38,13 +38,15 @@ exports.findAll = async (req, res) => {
     const condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
 
     const data = await Layanan.findAll({ where: condition });
-    res.send(data);
+    
+    res.status(200).send(data);
   } catch (err) {
     res.status(500).send({
       message: err.message || "Some error occurred while retrieving."
     });
   }
 };
+
 
 exports.findOne = async (req, res) => {
   try {
@@ -53,7 +55,7 @@ exports.findOne = async (req, res) => {
     const data = await Layanan.findByPk(id);
 
     if (data) {
-      res.send(data);
+      res.status(200).send(data);
     } else {
       res.status(404).send({
         message: `Cannot find Data with id=${id}.`
@@ -65,6 +67,7 @@ exports.findOne = async (req, res) => {
     });
   }
 };
+
 
 
 exports.update = async (req, res) => {

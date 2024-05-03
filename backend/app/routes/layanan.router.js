@@ -12,17 +12,17 @@ module.exports = app => {
     router.get("/:id", home.findAllReviews);
 //user
     
-    router.get("/user/:id", user.findAllReviewsByUser);
+    router.get("/profile/:id", user.findAllReviewsByUser);
 
   
     router.get("/", home.findAll);
   
-    router.post("/add/:id", ulas.create)
+    router.post("/:id", ulas.create)
   
   
     router.put("/:id", ulas.update);
   
-    router.delete("/:id", home.delete);
+    router.delete("/profile/:id", ulas.delete);
   
     router.delete("/", home.deleteAll);
 
