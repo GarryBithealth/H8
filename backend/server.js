@@ -71,3 +71,5 @@ try {
 } catch (error) {
   console.error('Error starting the server:', error);
 }
+
+module.exports = app;

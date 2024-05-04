@@ -6,16 +6,16 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    router.post("/", home.create);
+    router.post("/", home.create);//
 
     //layanan
-    router.get("/:id", home.findAllReviews);
+    router.get("/:id", home.findAllReviews);//
 //user
     
-    router.get("/profile/:id", user.findAllReviewsByUser);
+    router.get("/profile/:id", user.findAllReviewsByUser);//
 
   
-    router.get("/", home.findAll);
+    router.get("/", home.findAll);//
   
     router.post("/:id", ulas.create)
   
@@ -24,7 +24,7 @@ module.exports = app => {
   
     router.delete("/profile/", ulas.delete);
   
-    router.delete("/", home.deleteAll);
+    router.delete("/:id", home.delete);//
 
   
     app.use('/api/home', router);

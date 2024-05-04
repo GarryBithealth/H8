@@ -45,7 +45,7 @@ exports.allAccess = (req, res) => {
         res.status(200).send(data);
       } else {
         res.status(404).send({
-          message: `No reviews found for user with id=${id}`
+          message: `No reviews found from user with id=${id}`
         });
       }
     } catch (err) {

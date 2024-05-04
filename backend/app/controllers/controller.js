@@ -23,7 +23,7 @@ exports.create = async (req, res) => {
     };
 
     const data = await Layanan.create(layanan);
-    return res.send(data);
+    return res.status(201).send(data);
   } catch (err) {
     return res.status(500).send({
       message: err.message || "Some error occurred while creating."
@@ -104,11 +104,11 @@ exports.delete = async (req, res) => {
     });
 
     if (num == 1) {
-      res.send({
+      res.status(200).send({
         message: "Data was deleted successfully!"
       });
     } else {
-      res.send({
+      res.status(404).send({
         message: `Cannot delete Data with id=${id}. Maybe Data was not found!`
       });
     }
@@ -156,11 +156,16 @@ exports.findAllReviews = async (req, res) => {
       where: { id: id }
     });
 
-    res.send(data);
+    if (!data) {
+      return res.status(404).send({
+        message: `No reviews found for user with id=${id}`
+      });
+    }
+
+    res.status(200).send(data);
   } catch (err) {
     res.status(500).send({
       message: err.message || "Some error occurred while retrieving data."
     });
   }
 };
-
