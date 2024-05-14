@@ -35,11 +35,25 @@ exports.create = async (req, res) => {
 exports.findAll = async (req, res) => {
   try {
     const title = req.query.title;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10;
+    const offset = (page - 1) * limit;
+
     const condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
 
-    const data = await Layanan.findAll({ where: condition });
+    const data = await Layanan.findAndCountAll({ 
+      where: condition,
+      limit: limit,
+      offset: offset
+    });
     
-    res.status(200).send(data);
+    const totalPages = Math.ceil(data.count / limit);
+
+    res.status(200).send({
+      services: data.rows,
+      currentPage: page,
+      totalPages: totalPages
+    });
   } catch (err) {
     res.status(500).send({
       message: err.message || "Some error occurred while retrieving."
@@ -48,51 +62,9 @@ exports.findAll = async (req, res) => {
 };
 
 
-exports.findOne = async (req, res) => {
-  try {
-    const id = req.params.id;
-
-    const data = await Layanan.findByPk(id);
-
-    if (data) {
-      res.status(200).send(data);
-    } else {
-      res.status(404).send({
-        message: `Cannot find Data with id=${id}.`
-      });
-    }
-  } catch (err) {
-    res.status(500).send({
-      message: "Error retrieving with id=" + id
-    });
-  }
-};
 
 
 
-exports.update = async (req, res) => {
-  const id = req.params.id;
-
-  try {
-    const num = await Layanan.update(req.body, {
-      where: { id: id }
-    });
-
-    if (num == 1) {
-      res.send({
-        message: "Data was updated successfully."
-      });
-    } else {
-      res.send({
-        message: `Cannot update Data with id=${id}. Maybe Data was not found or req.body is empty!`
-      });
-    }
-  } catch (err) {
-    res.status(500).send({
-      message: "Error updating with id=" + id
-    });
-  }
-};
 
 
 exports.delete = async (req, res) => {
@@ -114,26 +86,12 @@ exports.delete = async (req, res) => {
     }
   } catch (err) {
     res.status(500).send({
-      message: "Could not delete Data with id=" + id
+      message: "Could not delete Data with id=" 
     });
   }
 };
 
 
-exports.deleteAll = async (req, res) => {
-  try {
-    const nums = await Layanan.destroy({
-      where: {},
-      truncate: false
-    });
-
-    res.send({ message: `${nums} data were deleted successfully!` });
-  } catch (err) {
-    res.status(500).send({
-      message: err.message || "Some error occurred while removing all data."
-    });
-  }
-};
 
 exports.findAllReviews = async (req, res) => {
   try {

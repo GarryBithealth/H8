@@ -5,26 +5,26 @@ module.exports = app => {
 
   
     var router = require("express").Router();
-  
-    router.post("/", home.create);//
+//layanan
 
-    //layanan
+    router.post("/", home.create);
+
     router.get("/:id", home.findAllReviews);//
-//user
-    
-    router.get("/profile/:id", user.findAllReviewsByUser);//
 
-  
     router.get("/", home.findAll);//
-  
-    router.post("/:id", ulas.create)
-  
+
+    router.delete("/:id", home.delete);//
+
+
+//Ulasan
+    
+    router.post("/:id",ulas.upload, ulas.create)
   
     router.put("/:id", ulas.update);
   
     router.delete("/profile/", ulas.delete);
-  
-    router.delete("/:id", home.delete);//
+//user
+    router.get("/profile/:id", user.findAllReviewsByUser);//
 
   
     app.use('/api/home', router);
