@@ -13,8 +13,6 @@ module.exports = app => {
 
     router.get("/", home.findAll);//
 
-    router.delete("/:id", home.delete);//
-
 
 //Ulasan
     
@@ -22,9 +20,12 @@ module.exports = app => {
   
     router.put("/:id", ulas.update);
   
-    router.delete("/profile/", ulas.delete);
+    router.delete("/profile/", ulas.deleteul);
 //user
     router.get("/profile/:id", user.findAllReviewsByUser);//
+
+    router.delete("/:id", home.delete);//
+
 
   
     app.use('/api/home', router);

@@ -34,12 +34,12 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
   try {
-    const title = req.query.title;
+    const {title , alamat, jenis} = req.query;
     const page = parseInt(req.query.page) || 1;
-    const limit = 10;
+    const limit = 6;
     const offset = (page - 1) * limit;
 
-    const condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
+    const condition = title ? { title: { [Op.iLike]: `%${title}%` } } : alamat ? { alamat: { [Op.iLike]: `%${alamat}%`}} : jenis ? { jenis: { [Op.iLike]: `%${jenis}%`}} : null ;
 
     const data = await Layanan.findAndCountAll({ 
       where: condition,
@@ -81,12 +81,12 @@ exports.delete = async (req, res) => {
       });
     } else {
       res.status(404).send({
-        message: `Cannot delete Data with id=${id}. Maybe Data was not found!`
+        message: `Cannot delete Data with id=${id}`
       });
     }
   } catch (err) {
     res.status(500).send({
-      message: "Could not delete Data with id=" 
+      message: "Could not delete Data with id" 
     });
   }
 };

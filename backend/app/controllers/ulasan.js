@@ -21,7 +21,7 @@ exports.create = async (req, res) => {
       userId: req.body.userid,
       ulasan: req.body.ulasan,
       rating: req.body.rating,
-      gambar: req.file.path
+      gambar: req.file?.path || null
     };
 
     const data = await Ulasan.create(ulasan);
@@ -46,10 +46,11 @@ exports.update = async (req, res) => {
       });
     }
 
-    const { ulasan, rating, userId } = req.body;
+    const { userId , ulasan, rating} = req.body;
 
+    console.log(req.body)
     const [num] = await Ulasan.update(
-      { ulasan, rating },
+      { ulasan, rating},
       { where: { layanansId, userId } }
     );
 
@@ -72,7 +73,7 @@ exports.update = async (req, res) => {
 
 
 
-exports.delete = async (req, res) => {
+exports.deleteul = async (req, res) => {
   try {
     const { userId, layanansId } = req.body;
 
@@ -80,13 +81,14 @@ exports.delete = async (req, res) => {
       where: { userId: userId, layanansId: layanansId }
     });
 
+
     if (num == 1) {
       res.status(200).send({
         message: "Data was deleted successfully!"
       });
     } else {
       res.status(404).send({
-        message: `Cannot delete Data with userId=${userId} and layanansId=${layanansId}. Maybe Data was not found!`
+        message: `Cannot delete Data`
       });
     }
   } catch (err) {
@@ -111,7 +113,7 @@ const storage = multer.diskStorage({
 
 exports.upload = multer({
   storage: storage,
-  limits: { fileSize: '10000000' },
+  limits: { fileSize: '10000' },
   fileFilter: (req, file, cb) => {
       const fileTypes = /jpeg|jpg|png|gif/
       const mimeType = fileTypes.test(file.mimetype)  
