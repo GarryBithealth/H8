@@ -14,11 +14,13 @@ module.exports = app => {
     router.get("/", home.findAll);//
 
 
+
+
 //Ulasan
     
     router.post("/:id",ulas.upload, ulas.create)
   
-    router.put("/:id", ulas.update);
+    router.put("/:id",ulas.upload, ulas.update);
   
     router.delete("/profile/", ulas.deleteul);
 //user

@@ -18,11 +18,13 @@ exports.create = async (req, res) => {
 
     const ulasan = {
       layanansId: id,
-      userId: req.body.userid,
+      usersId: req.body.userid,
       ulasan: req.body.ulasan,
       rating: req.body.rating,
       gambar: req.file?.path || null
     };
+
+    console.log(ulasan)
 
     const data = await Ulasan.create(ulasan);
 
