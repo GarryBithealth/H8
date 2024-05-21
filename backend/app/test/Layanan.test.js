@@ -105,7 +105,7 @@ describe('Get Layanan TESTING', ()=>{
 describe('Delete Layanan TESTING', ()=>{
     describe('/api/home/:id - delete Layanan by id',()=>{
         it('Response 200 -  Layanan delete by id',async ()=>{
-            const Layanan = 201;
+            const Layanan = 20;
             const result = await request(app).delete(`/api/home/${Layanan}`)
             expect(result.status).toBe(200)
         })

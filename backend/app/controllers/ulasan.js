@@ -18,7 +18,7 @@ exports.create = async (req, res) => {
 
     const ulasan = {
       layanansId: id,
-      usersId: req.body.userid,
+      userId: req.body.userId,
       ulasan: req.body.ulasan,
       rating: req.body.rating,
       gambar: req.file?.path || null
