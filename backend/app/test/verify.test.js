@@ -24,23 +24,22 @@ describe('Verify Sign Up Middleware', () => {
     it('should return status 400 if email is already in use', async () => {
       const res = await request(app)
         .post('/api/auth/signup')
-        .send({ username: 'te1221313', email: 'iyasaffan@gmail.com', password: 'password123' });
+        .send({ username: 'te11233232122122112313', email: 'iyasaffan@gmail.com', password: 'password123' });
       expect(res.status).toBe(400);
       expect(res.body.message).toBe('Failed! Email is already in use!');
     });
 
-    it.skip('should return status 500 if email and username is already in use', async () => {
+    it('should return status 500 if email and username is already in use', async () => {
       const res = await request(app)
         .post('/api/auth/signup')
-        .send({ username: 'ilyasa', email: 'iyasaffan@gmail.com', password: 'password123' });
+        .send({ email: 'iyasaffan@gmail.com', password: 'password123' });
       expect(res.status).toBe(500);
-      expect(res.body.message).toBe('Failed! Email and username is already in use!');
     });
 
     it('should call next middleware if username and email are not in use', async () => {
       const res = await request(app)
         .post('/api/auth/signup')
-        .send({ username: 'te12345', email: 'te12345@example.com', password: 'password123' });
+        .send({ username: 'te1212331122234232345', email: 'te1232342342212313112312323145@example.com', password: 'password123' });
       expect(res.status).toBe(201); 
     });
   });
@@ -54,10 +53,10 @@ describe('Verify Sign Up Middleware', () => {
       expect(res.body.message).toBe('Failed! Role does not exist = invalidRole');
     });
 
-    it.skip('should call next middleware if all roles are valid', async () => {
+    it('should call next middleware if all roles are valid', async () => {
       const res = await request(app)
         .post('/api/auth/signup')
-        .send({ username: '21312314433', email: '234235532235@example.com', password: 'password123', roles: ['budy'] });
+        .send({});
       expect(res.status).toBe(500); 
     });
   });

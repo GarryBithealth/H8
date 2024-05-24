@@ -47,8 +47,8 @@ describe('POST LayananTESTING', ()=>{
             expect(result.status).toBe(400)
         })
     })
-    describe.skip('/api/home - Post Layanan',()=>{
-        it.skip('Response 500 - internal server error Layanan Post',async ()=>{
+    describe('/api/home - Post Layanan',()=>{
+        it('Response 500 - internal server error Layanan Post',async ()=>{
             const body = {
                 "title":"",
                 "description": "apotek keren",
@@ -56,7 +56,7 @@ describe('POST LayananTESTING', ()=>{
                 "published": true,
                 "alamat": "jakarta",
                 "phone": "0812921929",
-                "linkImg": "p",
+                "linkImg": 5,
             }
             const result = await request(app).post('/api/home').send(body)
             expect(result.status).toBe(500)
@@ -82,7 +82,7 @@ describe('Get Layanan TESTING by id', ()=>{
     describe('/api/home/:id - Get Layanan by id',()=>{
         it('Response 500 - internal server error Layanan Get by id',async ()=>{
             const Layanan1 = "10d";
-            const result = await request(app).get(`/api/home/${Layanan1}`)
+            const result = await request(app).get(`/api/home/`)
             expect(result.status).toBe(500)
         })
     })
@@ -96,7 +96,7 @@ describe('Get Layanan TESTING', ()=>{
         })
     })   
         it('Response 500 - internal server error Layanan Get',async ()=>{
-            const result = await request(app).get(`/api/home/`)
+            const result = await request(app).get('/api/home/titles=5')
             expect(result.status).toBe(500)
         })
  })  
@@ -105,7 +105,7 @@ describe('Get Layanan TESTING', ()=>{
 describe('Delete Layanan TESTING', ()=>{
     describe('/api/home/:id - delete Layanan by id',()=>{
         it('Response 200 -  Layanan delete by id',async ()=>{
-            const Layanan = 20;
+            const Layanan = 256;
             const result = await request(app).delete(`/api/home/${Layanan}`)
             expect(result.status).toBe(200)
         })

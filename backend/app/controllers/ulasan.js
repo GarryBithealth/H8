@@ -1,4 +1,4 @@
-const db = require("../models");
+    const db = require("../models");
 const Ulasan = db.ulasan;
 const Op = db.Sequelize.Op;
 const multer = require("multer")

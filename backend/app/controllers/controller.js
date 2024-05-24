@@ -5,6 +5,7 @@ const user = db.user
 
 const Op = db.Sequelize.Op;
 
+
 exports.create = async (req, res) => {
   try {
     if (!req.body.title) {
@@ -34,23 +35,43 @@ exports.create = async (req, res) => {
 
 exports.findAll = async (req, res) => {
   try {
-    const {title , alamat, jenis} = req.query;
+    const { title, alamat, jenis, rating } = req.query;
     const page = parseInt(req.query.page) || 1;
     const limit = 6;
     const offset = (page - 1) * limit;
 
-    const condition = title ? { title: { [Op.iLike]: `%${title}%` } } : alamat ? { alamat: { [Op.iLike]: `%${alamat}%`}} : jenis ? { jenis: { [Op.iLike]: `%${jenis}%`}} : null ;
+    const condition = title ? { title: { [Op.iLike]: `%${title}%` } } : 
+                      alamat ? { alamat: { [Op.iLike]: `%${alamat}%`}} : 
+                      jenis ? { jenis: { [Op.iLike]: `%${jenis}%`}} :  null ;
 
     const data = await Layanan.findAndCountAll({ 
+      include: [
+        {
+          model: Ulasan,
+          as: 'ul',
+          attributes: ['id', 'rating']
+        }
+      ],
       where: condition,
       limit: limit,
       offset: offset
     });
-    
+
+    const layananWithAverageRating = data.rows.map(layanan => {
+      const ulasan = layanan.ul;
+      const totalRating = ulasan.reduce((sum, ul) => sum + ul.rating, 0);
+      const averageRating = ulasan.length > 0 ? (totalRating / ulasan.length).toFixed(1) : 0;
+
+      return {
+        ...layanan.get(), 
+        averageRating: parseFloat(averageRating)
+      };
+    });
+
     const totalPages = Math.ceil(data.count / limit);
 
     res.status(200).send({
-      services: data.rows,
+      services: layananWithAverageRating,
       currentPage: page,
       totalPages: totalPages
     });
@@ -60,11 +81,6 @@ exports.findAll = async (req, res) => {
     });
   }
 };
-
-
-
-
-
 
 
 exports.delete = async (req, res) => {
@@ -108,7 +124,13 @@ exports.findAllReviews = async (req, res) => {
               as: 'user', 
               attributes: ['id', 'username']
             }
-          ]
+          ],
+          attributes: [ "id" ,
+          "ulasan",
+          "rating",
+          "gambar",
+          "createdAt",
+          "updatedAt"]
         }
       ],
       where: { id: id }
@@ -120,10 +142,20 @@ exports.findAllReviews = async (req, res) => {
       });
     }
 
-    res.status(200).send(data);
+    const ulasan = data.ul;
+    const totalRating = ulasan.reduce((sum, ul) => sum + ul.rating, 0);
+    const averageRating = ulasan.length > 0 ? (totalRating / ulasan.length).toFixed(2) : 0;
+
+    const result = {
+      ...data.get(), 
+      averageRating: parseFloat(averageRating)
+    };
+
+    res.status(200).send(result);
   } catch (err) {
     res.status(500).send({
       message: err.message || "Some error occurred while retrieving data."
     });
   }
 };
+

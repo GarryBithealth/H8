@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">51.11% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>23/45</span>
+                <span class='fraction'>30/45</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/12</span>
+                <span class='fraction'>6/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">65.9% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>22/44</span>
+                <span class='fraction'>29/44</span>
             </div>
         
             
@@ -192,27 +192,27 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -309,28 +309,28 @@ const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 &nbsp;
-exports.signup = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    const user = <span class="cstat-no" title="statement not covered" >await User.create({</span>
+exports.signup = async (req, res) =&gt; {
+  try {
+    const user = await User.create({
       username: req.body.username,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, 8)
     });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (req.body.roles) {</span>
-      const roles = <span class="cstat-no" title="statement not covered" >await Role.findAll({</span>
+    if (req.body.roles) {
+      const roles = await Role.findAll({
         where: {
           name: {
             [Op.or]: req.body.roles
           }
         }
       });
-<span class="cstat-no" title="statement not covered" >      await user.setRoles(roles);</span>
+      await user.setRoles(roles);
     } else {
-<span class="cstat-no" title="statement not covered" >      await user.setRoles([1]);</span>
+      await user.setRoles([1]);
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    res.status(201).send({ message: "User was registered successfully!" });</span>
+    res.status(201).send({ message: "User was registered successfully!" });
   } catch (err) {
 <span class="cstat-no" title="statement not covered" >    res.status(500).send({ message: err.message });</span>
   }
@@ -424,7 +424,7 @@ exports.refreshToken = <span class="fstat-no" title="function not covered" >as</
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-05-21T02:55:32.077Z
+                at 2024-05-24T14:35:15.756Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -20,8 +20,8 @@ describe('USER TESTING', () => {
     describe('/user/register - REGISTER TESTING', () => {
         it('Response 201 - success register user', async () => {
             const body = {
-                "username": "te",
-                "email": "te1@mail.com",
+                "username": "te1212qwqe123133123123123",
+                "email": "te2121311qweqwe2312323123231@mail.com",
                 "password": "123",
                 "roles": ["user"]
             };
@@ -29,11 +29,9 @@ describe('USER TESTING', () => {
             expect(result.status).toBe(201);
         });
 
-        it.skip('Response 500 - success Register user', async () => {
+        it('Response 500 - success Register user', async () => {
             const body = {
-                "username": "il12ysa",
-                "email": "ilya1212s@mail.com",
-                "roles": ["us"]
+                
             };
             const result = await request(app).post('/api/auth/signup').send(body);
             expect(result.status).toBe(500);

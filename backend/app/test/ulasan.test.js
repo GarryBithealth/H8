@@ -16,9 +16,9 @@ beforeAll(async()=>{
 describe('Ulasan Post TESTING', ()=>{
     describe('/api/home/ - Ulasan Post TESTING',()=>{
         it('Response 201 - success Post ulasan',async ()=>{
-            const id = 59
+            const id = 60
             const body = {
-                "userId": 10,
+                "userId": 219,
                 "ulasan": "keren banget obatnya banyak",
                 "rating": 4,
                 "gambar": ""
@@ -57,9 +57,9 @@ describe('Ulasan Post TESTING', ()=>{
 describe('Ulasan Update TESTING', ()=>{
     describe('/api/home/:id - Ulasan update TESTING',()=>{
         it('Response 200 - success update ulasan by id',async ()=>{
-            const id = 59
+            const id = 60
             const body = {
-                "userId": 218,
+                "userId": 219,
                 "ulasan": "keren banget obatnya banyak",
                 "rating": 5,
                 "gambar": ""
