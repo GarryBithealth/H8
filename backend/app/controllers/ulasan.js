@@ -4,6 +4,7 @@ const Op = db.Sequelize.Op;
 const multer = require("multer")
 const path = require("path")
 
+
 exports.create = async (req, res) => {
   try {
     const id = req.params.id;
@@ -39,37 +40,43 @@ exports.create = async (req, res) => {
 
 
 exports.update = async (req, res) => {
-  try {
-    const layanansId = req.params.id;
+    try {
+      const layanansId = req.params.id;
 
-    if (!req.body.ulasan) {
-      return res.status(400).send({
-        message: "Request body can not be empty!"
+      if (!req.body.ulasan) {
+        return res.status(400).send({
+          message: "Request body can not be empty!",
+        });
+      }
+
+      const { userId, ulasan, rating } = req.body;
+      const gambar = req.file ? req.file.path : null;
+
+      console.log(req.body);
+
+      const updateData = { ulasan, rating };
+      if (gambar) {
+        updateData.gambar = gambar;
+      }
+
+      const [num] = await Ulasan.update(updateData, {
+        where: { layanansId, userId },
+      });
+
+      if (num === 1) {
+        res.status(200).send({
+          message: "Data was updated successfully.",
+        });
+      } else {
+        res.status(404).send({
+          message: `Cannot update Data with layanansId=${layanansId} and userId=${userId}. Data not found!`,
+        });
+      }
+    } catch (err) {
+      res.status(500).send({
+        message: "Error updating data.",
       });
     }
-
-    const { userId , ulasan, rating} = req.body;
-
-    console.log(req.body)
-    const [num] = await Ulasan.update(
-      { ulasan, rating},
-      { where: { layanansId, userId } }
-    );
-
-    if (num === 1) {
-      res.status(200).send({
-        message: "Data was updated successfully."
-      });
-    } else {
-      res.status(404).send({
-        message: `Cannot update Data with layanansId=${layanansId} and userId=${userId}. Data not found!`
-      });
-    }
-  } catch (err) {
-    res.status(500).send({
-      message: "Error updating data."
-    });
-  }
 };
 
 
