@@ -107,18 +107,12 @@ exports.deleteul = async (req, res) => {
   }
 };
 
-
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-      cb(null, path.join(__dirname, "../Images"))
-  },
-  filename: (req, file, cb) => {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
+  destination: 'Images',
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
-})
+});
 
 exports.upload = multer({
   storage: storage,
