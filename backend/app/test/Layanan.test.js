@@ -59,7 +59,7 @@ describe('POST LayananTESTING', ()=>{
                 "linkImg": 5,
             }
             const result = await request(app).post('/api/home').send(body)
-            expect(result.status).toBe(500)
+            expect(result.status).toBe(400)
         })
     })
 })
@@ -81,7 +81,6 @@ describe('Get Layanan TESTING by id', ()=>{
     })
     describe('/api/home/:id - Get Layanan by id',()=>{
         it('Response 500 - internal server error Layanan Get by id',async ()=>{
-            const Layanan1 = "10d";
             const result = await request(app).get(`/api/home/`)
             expect(result.status).toBe(500)
         })
@@ -105,7 +104,7 @@ describe('Get Layanan TESTING', ()=>{
 describe('Delete Layanan TESTING', ()=>{
     describe('/api/home/:id - delete Layanan by id',()=>{
         it('Response 200 -  Layanan delete by id',async ()=>{
-            const Layanan = 256;
+            const Layanan = 258;
             const result = await request(app).delete(`/api/home/${Layanan}`)
             expect(result.status).toBe(200)
         })

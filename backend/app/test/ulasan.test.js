@@ -112,7 +112,7 @@ describe('Delete Ulasan TESTING', ()=>{
     describe('/api/home/:id - delete Ulasan by id',()=>{
         it('Response 200 -  Ulasan delete by id',async ()=>{
             const body ={
-                "userId": 219,
+                "userId": 217,
                 "layanansId": 60,
                 "gambar": ""
               }

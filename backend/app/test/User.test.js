@@ -20,8 +20,8 @@ describe('USER TESTING', () => {
     describe('/user/register - REGISTER TESTING', () => {
         it('Response 201 - success register user', async () => {
             const body = {
-                "username": "te1212qwqe123133123123123",
-                "email": "te2121311qweqwe2312323123231@mail.com",
+                "username": "te12122323qwqe12323133123123123",
+                "email": "te212131123qweq23we2312323123231@mail.com",
                 "password": "123",
                 "roles": ["user"]
             };

@@ -1,3 +1,5 @@
+const layanan = require("../models/layanan.js");
+
 module.exports = app => {
     const home = require("../controllers/controller.js");
     const ulas = require("../controllers/ulasan.js");
@@ -18,9 +20,11 @@ module.exports = app => {
 
 //Ulasan
     
-    router.post("/:id",ulas.upload, ulas.create)
+    router.post("/:id", ulas.create)
   
-    router.put("/:id",ulas.upload, ulas.update);
+    router.put("/:id", ulas.update);
+
+    router.put("/edit/:id", home.update);
   
     router.delete("/profile/", ulas.deleteul);
 //user

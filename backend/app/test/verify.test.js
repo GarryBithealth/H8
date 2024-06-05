@@ -24,7 +24,7 @@ describe('Verify Sign Up Middleware', () => {
     it('should return status 400 if email is already in use', async () => {
       const res = await request(app)
         .post('/api/auth/signup')
-        .send({ username: 'te11233232122122112313', email: 'iyasaffan@gmail.com', password: 'password123' });
+        .send({ username: 'te1123323212211223222112313', email: 'iyasaffan@gmail.com', password: 'password123' });
       expect(res.status).toBe(400);
       expect(res.body.message).toBe('Failed! Email is already in use!');
     });
@@ -39,7 +39,7 @@ describe('Verify Sign Up Middleware', () => {
     it('should call next middleware if username and email are not in use', async () => {
       const res = await request(app)
         .post('/api/auth/signup')
-        .send({ username: 'te1212331122234232345', email: 'te1232342342212313112312323145@example.com', password: 'password123' });
+        .send({ username: 'te12123323121122234232345', email: 'te1232323234234221122313112312323145@example.com', password: 'password123' });
       expect(res.status).toBe(201); 
     });
   });

@@ -1,8 +1,7 @@
-    const db = require("../models");
+const db = require("../models");
 const Ulasan = db.ulasan;
 const Op = db.Sequelize.Op;
-const multer = require("multer")
-const path = require("path")
+
 
 
 exports.create = async (req, res) => {
@@ -15,19 +14,16 @@ exports.create = async (req, res) => {
       });
     }
 
-    console.log(req.body.ulasan)
 
     const ulasan = {
       layanansId: id,
       userId: req.body.userId,
       ulasan: req.body.ulasan,
       rating: req.body.rating,
-      gambar: req.file?.path || null
     };
 
-    console.log(ulasan)
-
     const data = await Ulasan.create(ulasan);
+
 
     res.status(201).send(data);
   } catch (err) {
@@ -50,14 +46,11 @@ exports.update = async (req, res) => {
       }
 
       const { userId, ulasan, rating } = req.body;
-      const gambar = req.file ? req.file.path : null;
 
       console.log(req.body);
 
       const updateData = { ulasan, rating };
-      if (gambar) {
-        updateData.gambar = gambar;
-      }
+
 
       const [num] = await Ulasan.update(updateData, {
         where: { layanansId, userId },
@@ -106,28 +99,3 @@ exports.deleteul = async (req, res) => {
     });
   }
 };
-
-const storage = multer.diskStorage({
-  destination: 'Images',
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
-});
-
-exports.upload = multer({
-  storage: storage,
-  limits: { fileSize: '10000' },
-  fileFilter: (req, file, cb) => {
-      const fileTypes = /jpeg|jpg|png|gif/
-      const mimeType = fileTypes.test(file.mimetype)  
-      const extname = fileTypes.test(path.extname(file.originalname))
-
-      if(mimeType && extname) {
-          return cb(null, true)
-      }
-      cb('Give proper files formate to upload')
-  }
-}).single('gambar') 
-
-
-

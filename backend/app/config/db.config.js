@@ -1,7 +1,9 @@
-module.exports = {
+module.exports = 
+{
+  "Dev":{
     HOST: "localhost",
     USER: "postgres",
-    PASSWORD: "",
+    PASSWORD: "Penabur_12",
     DB: "Final",
     dialect: "postgres",
     pool: {
@@ -10,4 +12,8 @@ module.exports = {
       acquire: 30000,
       idle: 10000
     }
-  };
+  },
+  "production":{
+    "use_env_variabel" : "DATABASE_URL"
+  }  
+}

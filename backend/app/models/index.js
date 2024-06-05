@@ -2,17 +2,17 @@ const config = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(
-  config.DB,
-  config.USER,
-  config.PASSWORD,
+  config.production.DB,
+  config.production.USER,
+  config.production.PASSWORD,
   {
-    host: config.HOST,
-    dialect: config.dialect,
+    host: config.production.HOST,
+    dialect: config.production.dialect,
     pool: {
-      max: config.pool.max,
-      min: config.pool.min,
-      acquire: config.pool.acquire,
-      idle: config.pool.idle
+      max: config.production.pool.max,
+      min: config.production.pool.min,
+      acquire: config.production.pool.acquire,
+      idle: config.production.pool.idle
     }
   }
 );
