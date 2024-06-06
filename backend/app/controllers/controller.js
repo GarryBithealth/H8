@@ -78,7 +78,9 @@ exports.findAll = async (req, res) => {
       ],
       where: condition,
       limit: limit,
-      offset: offset
+      offset: offset,
+      distinct: true,
+      order: [['id', 'ASC']]
     });
 
     const layananWithAverageRating = data.rows.map(layanan => {
