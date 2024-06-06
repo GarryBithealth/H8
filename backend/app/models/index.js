@@ -8,12 +8,6 @@ const sequelize = new Sequelize(
   {
     host: config.production.HOST,
     dialect: config.production.dialect,
-    pool: {
-      max: config.production.pool.max,
-      min: config.production.pool.min,
-      acquire: config.production.pool.acquire,
-      idle: config.production.pool.idle
-    }
   }
 );
 const db = {};
