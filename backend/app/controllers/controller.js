@@ -92,7 +92,7 @@ exports.findAll = async (req, res) => {
       };
     });
 
-    const totalPages = Math.ceil(data.count.length / limit);
+    const totalPages = Math.ceil(data.count / limit);
 
     res.status(200).send({
       services: layananWithAverageRating,
