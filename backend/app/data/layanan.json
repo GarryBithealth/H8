@@ -1,0 +1,20 @@
+[
+    {
+        "title":"Apotek 20",
+        "description": "apotek keren",
+        "jenis": "Apotek",
+        "published": true,
+        "alamat": "jakarta",
+        "phone": "0812921929",
+        "linkImg": "p"
+    },
+    {
+        "title":"Apotek 31",
+        "description": "apotek keren",
+        "jenis": "Apotek",
+        "published": true,
+        "alamat": "jakarta",
+        "phone": "0812921929",
+        "linkImg": "p"
+    }
+]

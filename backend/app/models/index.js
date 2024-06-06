@@ -39,12 +39,37 @@ db.user.belongsToMany(db.role, {
   otherKey: "roleId"
 });
 
+db.layanan.hasMany(db.ulasan,{
+  foreignKey: 'layanansId',
+  as: 'ul'
+});
+
+db.ulasan.belongsTo(db.layanan,{
+  foreignKey: 'layanansId',
+  as: 'layanan'
+});
+
+db.user.hasMany(db.ulasan,{
+  foreignKey: 'userId',
+  as: 'us'
+});
+
+db.ulasan.belongsTo(db.user,{
+  foreignKey: 'userId',
+  as: 'user'
+});
+
+
+
 db.refreshToken.belongsTo(db.user, {
   foreignKey: 'userId', targetKey: 'id'
 });
+
 db.user.hasOne(db.refreshToken, {
   foreignKey: 'userId', targetKey: 'id'
 });
+
+
 
 db.ROLES = ["user", "admin", "moderator"];
 

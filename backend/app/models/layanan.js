@@ -9,20 +9,14 @@ module.exports = (sequelize, Sequelize) => {
       jenis: {
         type: Sequelize.STRING
       },
-      ulasan: {
-        type: Sequelize.STRING
-      },
       published: {
         type: Sequelize.BOOLEAN
-      },
-      rating: {
-        type: Sequelize.FLOAT
       },
       alamat: {
         type: Sequelize.STRING
       },
       phone: {
-        type: Sequelize.STRING
+        type: Sequelize.BIGINT
       },
       linkImg: {
         type: Sequelize.STRING

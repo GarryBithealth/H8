@@ -28,34 +28,32 @@ const Role = db.role;
 //prod
 db.sequelize.sync();
 
-function initial() {
-  Role.create({
-    id: 1,
-    name: "user"
-  });
+// function initial() {
+//   Role.create({
+//     id: 1,
+//     name: "user"
+//   });
  
-  Role.create({
-    id: 2,
-    name: "moderator"
-  });
+//   Role.create({
+//     id: 2,
+//     name: "moderator"
+//   });
  
-  Role.create({
-    id: 3,
-    name: "admin"
-  });
-}
+//   Role.create({
+//     id: 3,
+//     name: "admin"
+//   });
+// }
 
-
-app.get("/", (req, res) => {
-  res.json({ message: "Test" });
-});
 
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
 require("./app/routes/layanan.router")(app);
 
 
+
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+  app.listen(PORT, () => {})
+
+
+module.exports = app;

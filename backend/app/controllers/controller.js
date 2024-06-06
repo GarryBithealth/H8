@@ -1,149 +1,184 @@
 const db = require("../models");
 const Layanan = db.layanan;
 const Ulasan = db.ulasan;
+const user = db.user
 
 const Op = db.Sequelize.Op;
 
-exports.create = (req, res) => {
+
+exports.create = async (req, res) => {
+  try {
     if (!req.body.title) {
-      res.status(400).send({
+      return res.status(400).send({
         message: "Content can not be empty!"
       });
-      return;
     }
-  
+
     const layanan = {
       title: req.body.title,
       description: req.body.description,
       jenis: req.body.jenis,
-      ulasan: req.body.ulasan,
-      rating: req.body.rating,
       alamat: req.body.alamat,
       phone: req.body.phone,
       linkImg: req.body.linkImg
     };
-  
-    Layanan.create(layanan)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating."
-        });
-      });
-  };
 
-exports.findAll = (req, res) => {
-    const title = req.query.title;
-    var condition = title ? { title: { [Op.iLike]: `%${title}%` } } : null;
-  
-    Layanan.findAll({ where: condition })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving."
-        });
-      });
-  };
+    const data = await Layanan.create(layanan);
+    return res.status(201).send(data);
+  } catch (err) {
+    return res.status(500).send({
+      message: err.message || "Some error occurred while creating."
+    });
+  }
+};
 
-exports.findOne = (req, res) => {
-    const id = req.params.id;
-  
-    Layanan.findByPk(id)
-      .then(data => {
-        if (data) {
-          res.send(data);
-        } else {
-          res.status(404).send({
-            message: `Cannot find Data with id=${id}.`
-          });
+
+exports.findAll = async (req, res) => {
+  try {
+    const { title, alamat, jenis, rating } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 6;
+    const offset = (page - 1) * limit;
+
+    const condition = title ? { title: { [Op.iLike]: `%${title}%` } } : 
+                      alamat ? { alamat: { [Op.iLike]: `%${alamat}%`}} : 
+                      jenis ? { jenis: { [Op.iLike]: `%${jenis}%`}} :  null ;
+
+    const data = await Layanan.findAndCountAll({ 
+      include: [
+        {
+          model: Ulasan,
+          as: 'ul',
+          attributes: ['id', 'rating']
         }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error retrieving with id=" + id
-        });
-      });
-  };
+      ],
+      where: condition,
+      limit: limit,
+      offset: offset,
+      distinct: true,
+      order: [['id', 'ASC']]
+    });
+
+    const layananWithAverageRating = data.rows.map(layanan => {
+      const ulasan = layanan.ul;
+      const totalRating = ulasan.reduce((sum, ul) => sum + ul.rating, 0);
+      const averageRating = ulasan.length > 0 ? (totalRating / ulasan.length).toFixed(1) : 0;
+
+      return {
+        ...layanan.get(), 
+        averageRating: parseFloat(averageRating)
+      };
+    });
+    console.log(data.count,'dataguanih')
+    const totalPages = Math.ceil(data.count / limit);
+
+    res.status(200).send({
+      services: layananWithAverageRating,
+      currentPage: page,
+      totalPages: totalPages
+    });
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occurred while retrieving."
+    });
+  }
+};
 
 exports.update = (req, res) => {
-    const id = req.params.id;
-  
-    Layanan.update(req.body, {
+  const id = req.params.id;
+  Layanan.update(req.body, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Data was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update Data with id=${id}. Maybe Data was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating with id=" + id
+      });
+    });
+};
+exports.delete = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const num = await Layanan.destroy({
       where: { id: id }
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Data was updated successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot update Data with id=${id}. Maybe Data was not found or req.body is empty!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error updating with id=" + id
-        });
-      });
-  };
+    });
 
-exports.delete = (req, res) => {
+    if (num == 1) {
+      res.status(200).send({
+        message: "Data was deleted successfully!"
+      });
+    } else {
+      res.status(404).send({
+        message: `Cannot delete Data with id=${id}`
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      message: "Could not delete Data with id" 
+    });
+  }
+};
+
+
+
+exports.findAllReviews = async (req, res) => {
+  try {
     const id = req.params.id;
-  
-    Layanan.destroy({
-      where: { id: id }
-    })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Data was deleted successfully!"
-          });
-        } else {
-          res.send({
-            message: `Cannot delete Data with id=${id}. Maybe Data was not found!`
-          });
+
+    const data = await Layanan.findOne({
+      include: [
+        {
+          model: Ulasan,
+          as: 'ul',
+          include: [ 
+            {
+              model: user, 
+              as: 'user', 
+              attributes: ['id', 'username']
+            }
+          ],
+          attributes: [ "id" ,
+          "ulasan",
+          "rating",
+          "gambar",
+          "createdAt",
+          "updatedAt"]
         }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Could not delete Data with id=" + id
-        });
-      });
-  };
+      ],
+      where: { id: id }
+    });
 
-exports.deleteAll = (req, res) => {
-    Layanan.destroy({
-      where: {},
-      truncate: false
-    })
-      .then(nums => {
-        res.send({ message: `${nums} data were deleted successfully!` });
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while removing all data."
-        });
+    if (!data) {
+      return res.status(404).send({
+        message: `No reviews found for user with id=${id}`
       });
-  };
+    }
 
-exports.findAllPublished = (req, res) => {
-    Layanan.findAll({ where: { published: true } })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while retrieving Data."
-        });
-      });
-  };
+    const ulasan = data.ul;
+    const totalRating = ulasan.reduce((sum, ul) => sum + ul.rating, 0);
+    const averageRating = ulasan.length > 0 ? (totalRating / ulasan.length).toFixed(2) : 0;
+
+    const result = {
+      ...data.get(), 
+      averageRating: parseFloat(averageRating)
+    };
+
+    res.status(200).send(result);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occurred while retrieving data."
+    });
+  }
+};
+

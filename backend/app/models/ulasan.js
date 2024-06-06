@@ -5,6 +5,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       rating: {
         type: Sequelize.FLOAT
+      },
+      gambar: {
+        type: Sequelize.STRING
       }
     });
   
