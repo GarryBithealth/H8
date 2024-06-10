@@ -9,9 +9,17 @@ require('dotenv').config()
 
 const app = express();
 
-var corsOptions = {
-  origin: "http://localhost:8081"
-};
+const corsOptions = {
+  origin: function (origin, callback) {
+      if (!origin) {
+          return callback(null, true);
+      }
+      return callback(null, true);
+  },
+  optionsSuccessStatus: 200,
+  credentials: true
+}
+
 
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -46,7 +54,8 @@ require("./app/routes/layanan.router")(app);
 
 
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
+console.log(PORT)
   app.listen(PORT, () => {
     console.log("process env")
   })

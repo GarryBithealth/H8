@@ -8,6 +8,16 @@ module.exports =
     dialect: "postgres",
   },
   "production":{
-    "use_env_variabel" : "DATABASE_URL"
-  }  
+    HOST: "aws-0-ap-southeast-1.pooler.supabase.com",
+    USER: "postgres.zpuzihtroapafucuhvdi",
+    PASSWORD: "Dl91eK5yJ4eYAV9g",
+    DB: "postgres",
+    dialect: "postgres",
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    }
+  },
 }
